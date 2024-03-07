@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queries Page</title>
+    <link rel="stylesheet" href="queries.css">
+</head>
+<body>
+    <header>
+        <h1>Queries Page</h1>
+        <input type="text" placeholder="Search" class="search-input">
+        <button class="search-button">Search</button>
+    </header>
+    <main>
+        <section class="saved-queries">
+            <h2>Saved Queries</h2>
+            <!-- List of saved queries will go here -->
+        </section>
+        <section class="hot-air-balloon">
+            <h2>Hot Air Balloon</h2>
+            <!-- Hot air balloon information will go here -->
+        </section>
+        <section class="query-names">
+            <h2>Query Names with Info</h2>
+            <ul class="query-list">
+                <li class="query-item">
+                    <h3>Query Name 1</h3>
+                    <p>Query info 1</p>
+                </li>
+                <li class="query-item">
+                    <h3>Query Name 2</h3>
+                    <p>Query info 2</p>
+                </li>
+                <li class="query-item">
+                    <h3>Query Name 3</h3>
+                    <p>Query info 3</p>
+                </li>
+                <li class="query-item">
+                    <h3>Query Name 4</h3>
+                    <p>Query info 4</p>
+                </li>
+                <li class="query-item">
+                    <h3>Query Name 5</h3>
+                    <p>Query info 5</p>
+                </li>
+            </ul>
+        </section>
+    </main>
+</body>
+</html>
