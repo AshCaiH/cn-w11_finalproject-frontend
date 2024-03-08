@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react';
 import './UserInfo.css';
 import { userContext } from '../common/contexts';
+import { Link } from 'react-router-dom';
 
 const UserInfo = () => {
     const {user, setUser} = useContext(userContext);
@@ -24,7 +25,7 @@ const UserInfo = () => {
                     </div>
                 </div>
                 <div className="user-info-right">
-                    <button className="user-info-button" onClick={handleLogout}>Logout</button>
+                    <Link to="/"><button className="user-info-button" onClick={handleLogout}>Logout</button></Link>
                 </div>
             </div>
         );
