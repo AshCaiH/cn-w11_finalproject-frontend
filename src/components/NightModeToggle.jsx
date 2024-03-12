@@ -7,14 +7,7 @@ export const NightModeToggle = () => {
   const { nightMode, setNightMode } = useContext(userContext);
 
   useEffect(() => {
-    if (Cookie.get("nightMode") == "true") {
-      console.log("cookie mode is true");
-      setNightMode(true);
-    } else {
-      console.log("cookie mode is false");
-    }
-
-    console.log(Cookie.get("nightMode"));
+    if (Cookie.get("nightMode") == "true") setNightMode(true);
   }, [setNightMode]);
 
   useEffect(() => {
