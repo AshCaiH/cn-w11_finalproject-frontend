@@ -28,6 +28,9 @@ export const QueryResponse = (props) => {
             if (!props.response.location) return <><p>Awaiting response from server.</p> <AiOutlineLoading3Quarters className="loading-icon"/></>;
             const location = props.response.location;
             const weather = props.response.weather;
+
+            const combined = weather.weathername.map((item, index) => [item, weather.temperature[index]]);
+
             return (
                 <>
                     <h4>Showing weather information for {location.city}, {location.county} in {location.country}</h4>
@@ -37,7 +40,23 @@ export const QueryResponse = (props) => {
                     {/* Don't save the county if it comes back as "undefined" */}
                     <button onClick={() => setDefault(`${location.city}, ${location.county != undefined ? location.county + "," : ""} ${location.country}`)}>Set {location.city} as my default location</button>
                     <img src={`data:image/png;base64,${props.response.map}`} />
-                    <p className="response-wrong-prompt">Wrong place? Try using a postcode or search with a more specific location name (eg, Bury, Greater Manchester)</p>
+
+                    <h3>Next 6 days:</h3>
+
+                    <div className="forecast">
+                        {combined.map((item, index) => {
+                            if (index == 0) return;
+    
+                            return (
+                                <div className="element small noshadow" key={index}>
+                                    <p >{item[0]}</p>
+                                    <p >Max temperatures of {item[1]}</p>
+                                </div>
+                            )
+                        })}
+                    </div>
+
+                    <p className="response-wrong-prompt">Wrong area? Try using a postcode or search with a more specific location name (eg, Bury, Greater Manchester)</p>
                 </>
             )
         }
