@@ -50,7 +50,7 @@ export const QueryResponse = (props) => {
                             return (
                                 <div className="element small noshadow" key={index}>
                                     <p >{item[0]}</p>
-                                    <p >Max temperatures of {item[1]}</p>
+                                    <p >Max temperatures of {item[1]}°C</p>
                                 </div>
                             )
                         })}

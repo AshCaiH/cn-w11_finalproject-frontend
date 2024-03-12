@@ -73,6 +73,11 @@ input {
     padding: 20px;
 }
 
+.element.small {
+    min-width: 160px;
+    max-width: 180px;
+}
+
 #content {
     display: flex;
     text-align: center;
