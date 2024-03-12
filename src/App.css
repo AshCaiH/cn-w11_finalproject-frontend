@@ -3,11 +3,11 @@
     --bgimage-Night: url(https://images.unsplash.com/photo-1533983272060-edb6f56af634?q=80&w=1923&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
     --bgimage-Toggle: var(--bgimage-Day);
 
-    --elementbg-Day: #ffffffcc;
+    --elementbg-Day: #ffffff88;
     --elementbg-Night: #41698f6b;
     --elementbg-Toggle: var(--elementbg-Day);
 
-    --inputbg-Day: white;
+    --inputbg-Day: rgb(255, 255, 255);
     --inputbg-Night: #14222b;
     --inputbg-Toggle: var(--inputbg-Day);
 
@@ -48,8 +48,8 @@ input {
     color: var(--elementtext-Toggle);
 }
 
-.blurbg {
-    backdrop-filter: blur(20px);
+.noshadow {
+    box-shadow: none !important;
 }
 
 .element {
@@ -59,9 +59,17 @@ input {
     margin: 20px;
     align-self: center;
     border-radius: 10px;
-    box-shadow: 0 10px 30px var(--boxglow-Toggle);
+    box-shadow:
+        0px 1.7px 2.2px rgba(0, 0, 0, 0.052),
+        0px 4.1px 5.3px rgba(0, 0, 0, 0.079),
+        0px 7.6px 10px rgba(0, 0, 0, 0.099),
+        0px 13.6px 17.9px rgba(0, 0, 0, 0.114),
+        0px 25.5px 33.4px rgba(0, 0, 0, 0.124),
+        0px 61px 80px rgba(0, 0, 0, 0.13)
+    ;
     transition: all 0.25s;
-
+    backdrop-filter: blur(5px);
+    min-width: 400px;
     padding: 20px;
 }
 
@@ -115,6 +123,11 @@ h2 {
     display: flex;
     flex-direction: column;
     padding: 20px;
+}
+
+button.dangerous {
+    align-self: center !important;
+    background-color: rgb(189, 0, 0);
 }
 
 .feedback {padding: 10px 10px; color: black}

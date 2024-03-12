@@ -12,7 +12,7 @@ export const LoginOrRegister = (props) => {
 
     return (
         <div className="flex">
-            <div className="loginregister-holder blurbg">
+            <div className="loginregister-holder element">
                 {loginMode ?
                 <Login      setFeedback={setFeedback}   setFeedbackType={setFeedbackType}/>
                 :

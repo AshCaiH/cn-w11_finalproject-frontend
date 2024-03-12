@@ -1,19 +1,26 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IoMdSunny, IoMdMoon } from "react-icons/io";
+import { userContext } from "../common/contexts";
 import Cookie from "js-cookie";
 
 export const NightModeToggle = () => {
-  const [nightMode, setMode] = useState(false);
-  const [cookieMode, setCookieMode] = useState(true);
+  const { nightMode, setNightMode } = useContext(userContext);
 
   useEffect(() => {
-    if (!nightMode) {
-      document.cookie = "nightMode=true";
+    if (Cookie.get("nightMode") == "true") {
+      console.log("cookie mode is true");
+      setNightMode(true);
     } else {
-      document.cookie = "nightMode=false";
+      console.log("cookie mode is false");
     }
-    let mode = Cookie.get("nightMode");
-    console.log("coookiue-mode", mode);
+
+    console.log(Cookie.get("nightMode"));
+  }, [setNightMode]);
+
+  useEffect(() => {
+    // if (!nightMode) document.cookie = "nightMode=0"
+    // else document.cookie = "nightMode=1"
+
     const variables = Array.from(document.styleSheets)
       .filter((styleSheet) => {
         return styleSheet.cssRules;
@@ -35,7 +42,6 @@ export const NightModeToggle = () => {
           "Toggle",
           nightMode ? "Night" : "Day"
         );
-        console.log(variable.key, `var(${newValue})`);
         document.documentElement.style.setProperty(
           variable.key,
           `var(${newValue})`
@@ -45,7 +51,13 @@ export const NightModeToggle = () => {
   }, [nightMode]);
 
   return (
-    <div className="nightmode-toggle" onClick={() => setMode(!nightMode)}>
+    <div
+      className="nightmode-toggle"
+      onClick={() => {
+        document.cookie = `nightMode=${!nightMode}`;
+        setNightMode(!nightMode);
+      }}
+    >
       {!nightMode ? <IoMdSunny /> : <IoMdMoon />}
     </div>
   );

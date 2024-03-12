@@ -38,6 +38,7 @@ body {
   background-image: var(--bgimage-Toggle);
   background-color: var(--bgcolour-Toggle);
   background-size: cover;
+  background-attachment: fixed;
 }
 
 h1 {

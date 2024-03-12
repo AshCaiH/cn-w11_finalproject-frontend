@@ -16,8 +16,7 @@ export const Navbar = (props) => {
       </button>
 
       {isOpen && (
-        <>
-          < NightModeToggle />
+        <>          
           <div className="navbar-menu">
             {user && <>
               <div className="navbar-links">
@@ -27,6 +26,7 @@ export const Navbar = (props) => {
               <UserInfo />
               </>
             }
+            < NightModeToggle />
           </div>
         </>
       )}

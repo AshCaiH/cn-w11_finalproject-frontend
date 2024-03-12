@@ -7,7 +7,6 @@
     width: 250px;
     align-self: center;
     border-radius: 10px;
-    box-shadow: 0 10px 30px var(--boxglow-Toggle);
     transition: all 0.25s;
 
     padding: 20px;

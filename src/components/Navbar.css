@@ -24,17 +24,21 @@
 .navbar-links {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 }
 
-.navbar-link {
-  color: #fff;
-  text-decoration: none;
-  margin-right: 1rem;
+.navbar-links a.active button {
+  background-color: #58a9ff;
+}
+
+.navbar-links a {
+  margin: auto 10px;
 }
 
 .nightmode-toggle {
+  align-self: center;
+  margin-left: auto;
   color: white;
   font-size: 24pt;
   padding: 0 10px;
