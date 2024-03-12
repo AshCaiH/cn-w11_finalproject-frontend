@@ -3,6 +3,8 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { putRequest } from "../common/requests";
 import { userContext } from "../common/contexts";
 
+import { TiWeatherCloudy, TiWeatherDownpour, TiWeatherPartlySunny, TiWeatherShower, TiWeatherSnow, TiWeatherStormy, TiWeatherSunny } from "react-icons/ti";
+
 export const QueryResponse = (props) => {
     const user = useContext(userContext).user;
 
@@ -28,16 +30,69 @@ export const QueryResponse = (props) => {
             if (!props.response.location) return <><p>Awaiting response from server.</p> <AiOutlineLoading3Quarters className="loading-icon"/></>;
             const location = props.response.location;
             const weather = props.response.weather;
+
+            const combined = weather.weathername.map((item, index) => {
+                return {
+                    name: item, 
+                    code: weather.weathercode[index], 
+                    temperature: weather.temperature[index],
+                }
+            });
+
+            const readWeather = (w) => {
+                if (w.code == 0) w.icon = <TiWeatherSunny />
+                else if (w.code <= 2) w.icon = <TiWeatherPartlySunny />
+                else if (w.code <= 48) w.icon = <TiWeatherCloudy />
+                else if (w.code <= 67) w.icon = <TiWeatherShower />
+                else if (w.code <= 77) w.icon = <TiWeatherSnow />
+                else if (w.code <= 82) w.icon = <TiWeatherDownpour />
+                else if (w.code <= 86) w.icon = <TiWeatherSnow />
+                else if (w.code <= 99) w.icon = <TiWeatherStormy />
+                else w.icon = <TiWeatherCloudy />
+
+                if (w.name.match( /Moderate/g )) w.colour = "yellow";
+                else if (w.name.match( /Heavy|Violent|Dense/g )) w.colour = "red"
+                else w.colour = "blue"
+            }
+
+            readWeather(combined[0]);
+
             return (
                 <>
-                    <h4>Showing weather information for {location.city}, {location.county} in {location.country}</h4>
-                    <h3>Today{"'"}s weather is {weather.weathername[0]}.</h3>
-                    <h3>The highest temperature today will be {weather.temperature[0]} degrees celsius.</h3>
-
                     {/* Don't save the county if it comes back as "undefined" */}
                     <button onClick={() => setDefault(`${location.city}, ${location.county != undefined ? location.county + "," : ""} ${location.country}`)}>Set {location.city} as my default location</button>
+                    <h3>Showing weather information for {location.city}, {location.county} in {location.country}</h3>
+
+                    <div className="responseInfo element no shadow">
+                        <div className={`weathericon ${combined[0].colour}`}>{combined[0].icon}</div> 
+                        <div>
+                            <p>Today{"'"}s weather is {combined[0].name}.</p>
+                            <p>The highest temperature today will be {combined[0].temperature}°C.</p>
+                        </div>
+                    </div>
+                    
                     <img src={`data:image/png;base64,${props.response.map}`} />
-                    <p className="response-wrong-prompt">Wrong place? Try using a postcode or search with a more specific location name (eg, Bury, Greater Manchester)</p>
+
+                    <h3>Next 6 days:</h3>
+
+                    <div className="forecast">
+                        {combined.map((w, index) => {
+                            if (index == 0) return;
+
+                            readWeather(w);
+    
+                            return (
+                                <div className="weatherbox element small noshadow" key={index}>
+                                    <div className={`weathericon ${w.colour}`}>{w.icon}</div>
+
+                                    <p >{w.name}</p>
+                                    <p >Max temperatures of {w.temperature}°C</p>
+                                </div>
+                            )
+                        })}
+                    </div>
+
+                    <p className="response-wrong-prompt">Wrong area? Try using a postcode or search with a more specific location name (eg, Bury, Greater Manchester)</p>
                 </>
             )
         }

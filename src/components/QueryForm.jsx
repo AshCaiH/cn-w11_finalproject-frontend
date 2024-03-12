@@ -1,6 +1,6 @@
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
-import "./QueryForm.css"
+import "./Query.css"
 import { useContext, useState } from "react"
 import { postRequest } from "../common/requests"
 import { userContext } from "../common/contexts"
@@ -38,12 +38,12 @@ export const QueryForm = (props) => {
                     placeholder={user.town}
                     onChange={(e) => setLocation(e.target.value)}
                 ></input>
-                <DatePicker 
+                {/* <DatePicker 
                     selected={date}
                     dateFormat="dd MMM yyyy"
                     onChange={(calendarDate) => setDate(calendarDate)}
                     todayButton="Click here for today"
-                />
+                /> */}
                 <button onClick={sendRequest}>Send Request</button>
             </form>
         </div>
