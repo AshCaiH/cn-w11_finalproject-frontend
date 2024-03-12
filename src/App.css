@@ -48,6 +48,9 @@ input {
     color: var(--elementtext-Toggle);
 }
 
+.hide-mobile {display: initial}
+.show-mobile {display: none}
+
 .noshadow {
     box-shadow: none !important;
 }
@@ -146,3 +149,9 @@ button.dangerous {
         transform: rotate(360deg);
     }
 }
+
+@media (max-width: 768px) {
+    .show-mobile {display: initial !important}
+    .hide-mobile {display: none !important}
+}
+  

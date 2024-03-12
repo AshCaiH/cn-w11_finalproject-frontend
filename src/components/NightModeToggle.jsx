@@ -3,7 +3,7 @@ import { IoMdSunny, IoMdMoon } from "react-icons/io";
 import { userContext } from "../common/contexts";
 import Cookie from "js-cookie";
 
-export const NightModeToggle = () => {
+export const NightModeToggle = (props) => {
     const {nightMode, setNightMode} = useContext(userContext);
 
     useEffect(() => {        
@@ -39,7 +39,7 @@ export const NightModeToggle = () => {
     }, [nightMode]);
 
     return (
-        <div className="nightmode-toggle" onClick={()=>{
+        <div className={`nightmode-toggle ${props.class}`} onClick={()=>{
                 document.cookie = `nightMode=${!nightMode}`
                 setNightMode(!nightMode)
             }}>
