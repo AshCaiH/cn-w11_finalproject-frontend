@@ -17,7 +17,7 @@ export const QueryResponse = (props) => {
         }
 
         await putRequest(`${import.meta.env.VITE_SERVER_URL}/users/update/town`, body, headers)
-            .then(user.location = location);
+            .then(user.town = location);
     }
 
     
