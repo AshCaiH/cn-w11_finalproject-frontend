@@ -1,13 +1,14 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import PageHome from "./pages/page-home";
-import PageUser from "./pages/page-user";
+import PageSettings from "./pages/page-settings";
 import Navbar from "./components/Navbar";
 import { useEffect } from "react";
 import Cookie from "js-cookie";
 import { userContext } from "./common/contexts";
 import { useState } from "react";
 import LoginOrRegister from "./components/LoginOrRegister";
+import PageUser from "./pages/page-user";
 
 function App() {
   const [user, setUser] = useState();
@@ -57,6 +58,7 @@ function App() {
             <Routes>
               <Route path="" element={<PageHome />} />
               <Route path="/user" element={<PageUser />} />
+              <Route path="/settings" element={<PageSettings />} />
             </Routes>
           )}
         </div>

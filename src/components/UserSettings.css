@@ -1,0 +1,17 @@
+.formButton {
+  margin: 0 auto;
+}
+
+.favTown {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.favTownsContainer {
+  padding: 0 10px;
+}
+
+.userStyle {
+  margin: 0 auto;
+}
