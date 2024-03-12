@@ -50,7 +50,7 @@ export const QueryResponse = (props) => {
                 else if (w.code <= 99) w.icon = <TiWeatherStormy />
                 else w.icon = <TiWeatherCloudy />
 
-                if (w.name.match( /Moderate/g )) w.colour = "yellow";
+                if (w.name.match( /Moderate|moderate/g )) w.colour = "yellow";
                 else if (w.name.match( /Heavy|Violent|Dense/g )) w.colour = "red"
                 else w.colour = "blue"
             }
