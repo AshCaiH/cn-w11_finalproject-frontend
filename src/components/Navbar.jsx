@@ -22,6 +22,7 @@ export const Navbar = (props) => {
               <div className="navbar-links">
                 <NavLink to="/"><button className="user-info-button">Dashboard</button></NavLink>
                 <NavLink to="/user"><button className="user-info-button">Profile</button></NavLink>
+                <NavLink to="/settings"><button className="user-info-button">Settings</button></NavLink>
               </div>
               <UserInfo />
               </>

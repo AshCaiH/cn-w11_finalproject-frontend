@@ -1,8 +1,8 @@
-import UserSettings from "../components/UserSettings";
+import ProfileCard from "../components/ProfileCard";
 const PageUser = (props) => {
   return (
     <>
-      <UserSettings />
+      <ProfileCard />
     </>
   );
 };
