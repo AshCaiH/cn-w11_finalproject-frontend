@@ -31,9 +31,64 @@
     margin: 8px;
 }
 
+.responseInfo {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px;
+    font-size: 16pt;
+    font-weight: bold;
+
+    div {
+        margin: 10px;
+    }
+
+    .weathericon {
+        align-self: center;
+    }
+}
+
 .forecast {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+    align-content: start;
+}
+
+.weatherbox {
+    display: flex;
+    flex-direction: column;
+    align-self: baseline;
+    justify-content: center;    
+
+    .weathericon {
+        position: relative;
+        top: -10px;
+        left: -10px;
+        margin: -40px;
+        padding: 10px;
+    }
+}
+
+.weathericon {
+    font-size: 36pt;
+    background-color: var(--elementbg-Toggle);
+    border-radius: 60px;
+    width: fit-content;
+    border: 5px solid;
+    display: flex;
+    justify-content: center;
+    padding: 10px 20px;
+}
+
+.weathericon.blue {
+    border-color: rgb(114, 152, 255);
+}
+
+.weathericon.yellow {
+    border-color: rgb(255, 196, 0);
+}
+
+.weathericon.red {
+    border-color: rgb(255, 51, 0);
 }
