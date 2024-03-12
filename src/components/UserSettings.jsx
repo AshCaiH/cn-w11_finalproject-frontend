@@ -57,8 +57,6 @@ const UserSettings = () => {
   const handleDeleteAccount = async (e) => {
     e.preventDefault();
 
-    console.log(user.token);
-
     const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/users/delUser`, {
       method: "DELETE",      
       headers: {

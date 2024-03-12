@@ -22,8 +22,6 @@ export const QueryForm = (props) => {
             Authorization: `Bearer ${user.token}`
         }
 
-        console.log(reqHeaders);
-
         props.setResponse("awaiting response from server");
 
         const response = await postRequest(`${import.meta.env.VITE_SERVER_URL}/getweather`, reqBody, reqHeaders);
