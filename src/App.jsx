@@ -26,8 +26,6 @@ function App() {
   }, []);
 
   const logInWithToken = async (token, setUser) => {
-    console.log("token", token);
-
     const authorizedUser = await fetch(
       `${import.meta.env.VITE_SERVER_URL}/users/authCheck`,
       {
@@ -41,7 +39,6 @@ function App() {
       return response.json();
     }).then(async (response) => {
       response.user.token = token;
-      console.log(response.user);
       await setUser(response.user);
     });
   };

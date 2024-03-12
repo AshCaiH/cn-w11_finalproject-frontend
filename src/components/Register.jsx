@@ -15,8 +15,6 @@ export const Register = (props) => {
         password:   password,
     });
 
-    console.log(reqBody);
-
     const response = await postRequest(`${import.meta.env.VITE_SERVER_URL}/users/signUp`, reqBody);
 
     if (response.error) {

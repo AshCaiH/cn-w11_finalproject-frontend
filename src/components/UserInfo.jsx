@@ -11,12 +11,9 @@ const UserInfo = () => {
     setUser(null);
   };
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
+  useEffect(() => {}, [user]);
 
   if (user) {
-    console.log("user available");
     return (
       <div className="user-info-container">
         <div className="user-info-left">
