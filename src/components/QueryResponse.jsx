@@ -3,7 +3,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { putRequest } from "../common/requests";
 import { userContext } from "../common/contexts";
 import { useState } from "react";
-import { Line } from "react-chartjs-2";
+import { Line, Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import 'chartjs-adapter-luxon';
 import {
@@ -17,6 +17,7 @@ import {
 } from "react-icons/ti";
 
 export const QueryResponse = (props) => {
+
     const {user, nightMode} = useContext(userContext);
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const [locationSaved, setLocationSaved] = useState(false);
@@ -50,6 +51,7 @@ export const QueryResponse = (props) => {
                         <AiOutlineLoading3Quarters className="loading-icon" />
                     </>
                 );
+
             const location = props.response.location;
             const weather = props.response.weather;
             console.log(weather);
@@ -98,6 +100,7 @@ export const QueryResponse = (props) => {
       return (
         <>
 
+
         { locationSaved ?
             <div className="feedback type-success">
                 Default location set to {`${location.city}, ${location.county != undefined ? location.county + "," : ""} ${location.country}`}
@@ -136,18 +139,77 @@ export const QueryResponse = (props) => {
 
                     <img src={`data:image/png;base64,${props.response.map}`} />
 
-                    <h3>Forecast:</h3>
+                    <h3>Today</h3>
+                    <Line
+                        data={{
+                            labels: weather.hourly.time.map((item) => new Date(item)),
+                            // labels: [2, 3, 4, 5, 6, 7], - if You want to display the days on Y axis
+                            datasets: [
+                                {
+                                    label: "Temperature",
+                                    data: weather.hourly.temperature_2m,
+                                },
+                                {
+                                    label: "Cloud cover",
+                                    data: weather.hourly.cloud_cover,
+                                }
+                            ],
+                        }}
+
+                        options = {{
+                            fontColor: "#FFF",
+                            scales: {
+                                x: {
+                                    type: 'time',
+                                    ticks: {
+                                        color: (nightMode ? "white" : "black")
+                                    },
+                                    time: {
+                                        unit: 'day'
+                                    }
+                                },
+                                y: {
+                                    ticks: {
+                                        color: (nightMode ? "white" : "black")
+                                    },
+                                },                                      
+                            },
+                            elements: {
+                                point:{
+                                    radius: 5,
+                                    pointBackgroundColor: "#0000",
+                                    pointBorderColor: "#0000",
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                    labels: {
+                                    color: (nightMode ? "white" : "black")
+                                    }
+                                }
+                            },
+                            hover: {
+                                mode: "nearest",
+                                intersect: true,
+                            },  
+                        }}/>
                     <div>
-                        <Line
+                        <Bar
                             data={{
-                                labels: weather.hourly.time.map((item) => new Date(item)),
-                                // labels: [2, 3, 4, 5, 6, 7], - if You want to display the days on Y axis
+                                labels: weather.hourly.time,
                                 datasets: [
                                     {
-                                        label: "Temperature",
-                                        data: weather.hourly.temperature_2m,
+                                        label: "rain",
+                                        data: weather.hourly.rain,
                                     },
                                 ],
+                                options: {
+                                    hover: {
+                                        mode: "nearest",
+                                        intersect: true,
+                                    },
+                                },
                             }}
 
                             options = {{
@@ -186,9 +248,8 @@ export const QueryResponse = (props) => {
                                 hover: {
                                     mode: "nearest",
                                     intersect: true,
-                                },  
-                            }}
-                        />
+                                }
+                            }}/>
                     </div>
 
                     <div className="forecast">
@@ -200,7 +261,6 @@ export const QueryResponse = (props) => {
                             return (
                                 <div className="weatherbox element small noshadow" key={index}>
                                     <div className={`weathericon ${w.colour}`}>{w.icon}</div>
-
                                     <h2>{w.day}</h2>
                                     <p>{w.name}</p>
                                     <p>Max temperatures of {w.temperature}°C</p>
