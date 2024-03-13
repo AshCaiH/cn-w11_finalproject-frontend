@@ -30,7 +30,6 @@ const AreYouSure = ({
   };
 
   const handleConfirm = () => {
-    onConfirm(password);
     setShowConfirm(false);
     setPassword("");
   };
@@ -62,10 +61,10 @@ const AreYouSure = ({
           <h2>{title ? title : "Confirmation"}</h2>
           <p>{confirmMessage}</p>
           <p>Please enter your password to confirm:</p>
-          <input type="password" value={password} onChange={handleChange} />
+          <input autoFocus type="password" value={password} onChange={handleChange} />
 
           <div>
-            <button type="submit" onClick={handleConfirm}>{confirmText ? confirmText : "OK"}</button>
+            <button type="submit">{confirmText ? confirmText : "OK"}</button>
             <button className="cancel" onClick={handleCancel}>Cancel</button>
           </div>
 
