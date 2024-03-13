@@ -21,9 +21,7 @@ export const QueryResponse = (props) => {
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const [locationSaved, setLocationSaved] = useState(false);
 
-    useEffect(() => {
-        setLocationSaved(false);
-    }, [props.response]);
+  useEffect(() => {}, [props.response]);
 
     const setDefault = async (location) => {
         const body = JSON.stringify({ town: location });
@@ -84,43 +82,38 @@ export const QueryResponse = (props) => {
 
             readWeather(combined[0]);
 
-            return (
-                <>
-                    {locationSaved ?
-                        <div className="feedback type-success">
-                            Default location set to {`${location.city}, ${location.county != undefined ? location.county + "," : ""} ${location.country}`}
-                        </div>
-                        :
-                        <button onClick={() => {
-                            const newDefaultLoc = `${location.city}, ${location.county != undefined ? location.county + "," : ""} ${location.country}`
-                            setDefault(newDefaultLoc)
-                            setLocationSaved(newDefaultLoc);
-                        }
-
-                        }>
-                            Set {location.city} as my default location
-                        </button>
-                    }
-
-
-                    <h3>
-                        Showing weather information for {location.city}, {location.county}{" "}
-                        in {location.country}
-                    </h3>
-                    <div className="responseInfo element no shadow">
-                        <div className={`weathericon ${combined[0].colour}`}>
-                            {combined[0].icon}
-                        </div>
-                        <div>
-                            <p>
-                                Today{"'"}s weather is {combined[0].name}.
-                            </p>
-                            <p>
-                                The highest temperature today will be {combined[0].temperature}
-                                °C.
-                            </p>
-                        </div>
-                    </div>
+      return (
+        <>
+          {/* Don't save the county if it comes back as "undefined" */}
+          <button
+            onClick={() =>
+              setDefault(
+                `${location.city}, ${
+                  location.county != undefined ? location.county + "," : ""
+                } ${location.country}`
+              )
+            }
+          >
+            Set {location.city} as my default location
+          </button>
+          <h3>
+            Showing weather information for {location.city}, {location.county}{" "}
+            in {location.country}
+          </h3>
+          <div className="responseInfo element no shadow">
+            <div className={`weathericon ${combined[0].colour}`}>
+              {combined[0].icon}
+            </div>
+            <div>
+              <p>
+                Today{"'"}s weather is {combined[0].name}.
+              </p>
+              <p>
+                The highest temperature today will be {combined[0].temperature}
+                °C.
+              </p>
+            </div>
+          </div>
 
                     <img src={`data:image/png;base64,${props.response.map}`} />
 
