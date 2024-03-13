@@ -61,6 +61,9 @@ export const QueryResponse = (props) => {
         };
       });
 
+      const date = new Date();
+      console.log(date.getHours());
+
       const readWeather = (w) => {
         if (w.code == 0) w.icon = <TiWeatherSunny />;
         else if (w.code <= 2) w.icon = <TiWeatherPartlySunny />;
@@ -126,6 +129,12 @@ export const QueryResponse = (props) => {
                     data: tempArray,
                   },
                 ],
+                options: {
+                  hover: {
+                    mode: "nearest",
+                    intersect: true,
+                  },
+                },
               }}
             />
           </div>
