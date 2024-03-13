@@ -60,9 +60,7 @@ export const QueryResponse = (props) => {
           temperature: weather.temperature[index],
         };
       });
-
-      const date = new Date();
-      console.log(date.getHours());
+      console.log(combined);
 
       const readWeather = (w) => {
         if (w.code == 0) w.icon = <TiWeatherSunny />;
