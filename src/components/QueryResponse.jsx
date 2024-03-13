@@ -5,6 +5,7 @@ import { userContext } from "../common/contexts";
 import { useState } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
+import 'chartjs-adapter-luxon';
 import {
     TiWeatherCloudy,
     TiWeatherDownpour,
@@ -16,7 +17,7 @@ import {
 } from "react-icons/ti";
 
 export const QueryResponse = (props) => {
-    const user = useContext(userContext).user;
+    const {user, nightMode} = useContext(userContext);
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const [locationSaved, setLocationSaved] = useState(false);
 
@@ -139,20 +140,53 @@ export const QueryResponse = (props) => {
                     <div>
                         <Line
                             data={{
-                                labels: codeArray,
+                                labels: weather.hourly.time.map((item) => new Date(item)),
                                 // labels: [2, 3, 4, 5, 6, 7], - if You want to display the days on Y axis
                                 datasets: [
                                     {
                                         label: "Temperature",
-                                        data: tempArray,
+                                        data: weather.hourly.temperature_2m,
                                     },
                                 ],
-                                options: {
-                                    hover: {
-                                        mode: "nearest",
-                                        intersect: true,
+                            }}
+
+                            options = {{
+                                fontColor: "#FFF",
+                                scales: {
+                                    x: {
+                                        type: 'time',
+                                        ticks: {
+                                            color: (nightMode ? "white" : "black")
+                                        },
+                                        time: {
+                                            unit: 'day'
+                                        }
                                     },
+                                    y: {
+                                        ticks: {
+                                            color: (nightMode ? "white" : "black")
+                                        },
+                                    },                                      
                                 },
+                                elements: {
+                                    point:{
+                                        radius: 5,
+                                        pointBackgroundColor: "#0000",
+                                        pointBorderColor: "#0000",
+                                    }
+                                },
+                                plugins: {
+                                    legend: {
+                                        position: 'top',
+                                        labels: {
+                                        color: (nightMode ? "white" : "black")
+                                        }
+                                    }
+                                },
+                                hover: {
+                                    mode: "nearest",
+                                    intersect: true,
+                                },  
                             }}
                         />
                     </div>
