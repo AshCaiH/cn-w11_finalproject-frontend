@@ -3,7 +3,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { putRequest } from "../common/requests";
 import { userContext } from "../common/contexts";
 import { useState } from "react";
-import { Line } from "react-chartjs-2";
+import { Line, Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import {
   TiWeatherCloudy,
@@ -48,7 +48,14 @@ export const QueryResponse = (props) => {
         );
       const location = props.response.location;
       const weather = props.response.weather;
-      console.log(weather);
+      // Hourly wether
+      const hourlyWeather = props.response.weather.hourly_weather;
+      const hourlyTemp = hourlyWeather.temperature_2m;
+      const hourlyRain = hourlyWeather.rain;
+      const hourlyClouds = hourlyWeather.cloud_cover;
+      const hours = hourlyWeather.hourly;
+      // Get hours
+
       const tempArray = [];
       const codeArray = [];
       const combined = weather.weathername.map((item, index) => {
@@ -60,7 +67,6 @@ export const QueryResponse = (props) => {
           temperature: weather.temperature[index],
         };
       });
-      console.log(combined);
 
       const readWeather = (w) => {
         if (w.code == 0) w.icon = <TiWeatherSunny />;
@@ -114,6 +120,48 @@ export const QueryResponse = (props) => {
           </div>
 
           <img src={`data:image/png;base64,${props.response.map}`} />
+
+          <h3>Today</h3>
+          <div>
+            <Line
+              data={{
+                labels: hours,
+                datasets: [
+                  {
+                    label: "Temperature",
+                    data: hourlyTemp,
+                    borderColor: "green",
+                  },
+                ],
+                options: {
+                  hover: {
+                    mode: "nearest",
+                    intersect: true,
+                  },
+                },
+              }}
+            />
+          </div>
+          <div>
+            <Bar
+              data={{
+                labels: hours,
+                datasets: [
+                  {
+                    label: "rain",
+                    data: hourlyRain,
+                    backgroundColor: "blue",
+                  },
+                ],
+                options: {
+                  hover: {
+                    mode: "nearest",
+                    intersect: true,
+                  },
+                },
+              }}
+            />
+          </div>
 
           <h3>Next 6 days:</h3>
           <div>
