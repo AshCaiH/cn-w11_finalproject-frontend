@@ -66,21 +66,21 @@ export const QueryResponse = (props) => {
       const date = new Date();
       console.log(date.getHours());
 
-      const readWeather = (w) => {
-        if (w.code == 0) w.icon = <TiWeatherSunny />;
-        else if (w.code <= 2) w.icon = <TiWeatherPartlySunny />;
-        else if (w.code <= 48) w.icon = <TiWeatherCloudy />;
-        else if (w.code <= 67) w.icon = <TiWeatherShower />;
-        else if (w.code <= 77) w.icon = <TiWeatherSnow />;
-        else if (w.code <= 82) w.icon = <TiWeatherDownpour />;
-        else if (w.code <= 86) w.icon = <TiWeatherSnow />;
-        else if (w.code <= 99) w.icon = <TiWeatherStormy />;
-        else w.icon = <TiWeatherCloudy />;
+            const readWeather = (w) => {
+                if (w.code == 0) w.icon = <TiWeatherSunny />
+                else if (w.code <= 2) w.icon = <TiWeatherPartlySunny />
+                else if (w.code <= 48) w.icon = <TiWeatherCloudy />
+                else if (w.code <= 67) w.icon = <TiWeatherShower />
+                else if (w.code <= 77) w.icon = <TiWeatherSnow />
+                else if (w.code <= 82) w.icon = <TiWeatherDownpour />
+                else if (w.code <= 86) w.icon = <TiWeatherSnow />
+                else if (w.code <= 99) w.icon = <TiWeatherStormy />
+                else w.icon = <TiWeatherCloudy />
 
-        if (w.name.match(/Moderate/g)) w.colour = "yellow";
-        else if (w.name.match(/Heavy|Violent|Dense/g)) w.colour = "red";
-        else w.colour = "blue";
-      };
+                if (w.name.match( /Moderate|moderate/g )) w.colour = "yellow";
+                else if (w.name.match( /Heavy|Violent|Dense/g )) w.colour = "red"
+                else w.colour = "blue"
+            }
 
       readWeather(combined[0]);
 
