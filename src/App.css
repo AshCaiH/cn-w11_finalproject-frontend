@@ -7,6 +7,10 @@
     --elementbg-Night: #41698f6b;
     --elementbg-Toggle: var(--elementbg-Day);
 
+    --elementbgsolid-Day: #ffffff;
+    --elementbgsolid-Night: #41698f;
+    --elementbgsolid-Toggle: var(--elementbgsolid-Day);
+
     --inputbg-Day: rgb(255, 255, 255);
     --inputbg-Night: #14222b;
     --inputbg-Toggle: var(--inputbg-Day);
@@ -81,6 +85,10 @@ input {
     max-width: 180px;
 }
 
+.element.solid {
+    background-color: var(--elementbgsolid-Toggle);
+}
+
 #content {
     display: flex;
     text-align: center;
@@ -141,6 +149,20 @@ button.dangerous {
 .feedback {padding: 10px 10px; color: black}
 .feedback.type-error {background-color: rgb(252, 210, 162);}
 .feedback.type-success {background-color: rgb(204, 252, 164);}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: 50;
+
+    backdrop-filter: blur(5px);
+    display: flex;
+    place-content: center;
+}
 
 @keyframes rotating {
     from {
