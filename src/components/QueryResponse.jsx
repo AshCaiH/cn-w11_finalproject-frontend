@@ -131,26 +131,13 @@ export const QueryResponse = (props) => {
                     label: "Temperature",
                     data: hourlyTemp,
                     borderColor: "green",
+                    yAxisID: "B",
                   },
-                ],
-                options: {
-                  hover: {
-                    mode: "nearest",
-                    intersect: true,
-                  },
-                },
-              }}
-            />
-          </div>
-          <div>
-            <Bar
-              data={{
-                labels: hours,
-                datasets: [
                   {
                     label: "rain",
                     data: hourlyRain,
                     backgroundColor: "blue",
+                    yAxisID: "A",
                   },
                 ],
                 options: {
@@ -158,6 +145,22 @@ export const QueryResponse = (props) => {
                     mode: "nearest",
                     intersect: true,
                   },
+                  yAxes: [
+                    {
+                      id: "A",
+                      type: "linear",
+                      position: "left",
+                    },
+                    {
+                      id: "B",
+                      type: "linear",
+                      position: "right",
+                      ticks: {
+                        max: 1,
+                        min: 0,
+                      },
+                    },
+                  ],
                 },
               }}
             />
