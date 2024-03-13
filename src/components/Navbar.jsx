@@ -8,7 +8,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import LogoutButton from "./LogoutButton";
 
 export const Navbar = (props) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const user = useContext(userContext).user;
 
   return (
