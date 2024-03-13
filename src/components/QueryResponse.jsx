@@ -150,7 +150,7 @@ export const QueryResponse = (props) => {
                                     data: weather.hourly.temperature_2m,
                                 },
                                 {
-                                    label: "Cloud cover",
+                                    label: "Cloud cover %",
                                     data: weather.hourly.cloud_cover,
                                 }
                             ],
@@ -168,11 +168,28 @@ export const QueryResponse = (props) => {
                                         unit: 'day'
                                     }
                                 },
-                                y: {
+                                y1: {
+                                    type: 'linear',
                                     ticks: {
                                         color: (nightMode ? "white" : "black")
                                     },
-                                },                                      
+                                },
+                                y: {
+                                    type: 'linear',
+                                    display: false,
+                                    position: 'right',
+                                    grace: "10%",
+                                    scalePositionLeft: true,
+                            
+                                    // grid line settings
+                                    grid: {
+                                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                    },
+
+                                    ticks: {
+                                        color: (nightMode ? "white" : "black")
+                                    },
+                                },
                             },
                             elements: {
                                 point:{
