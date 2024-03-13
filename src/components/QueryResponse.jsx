@@ -120,7 +120,7 @@ export const QueryResponse = (props) => {
           </div>
 
           <img src={`data:image/png;base64,${props.response.map}`} />
-
+          {/*  */}
           <h3>Today</h3>
           <div>
             <Line
