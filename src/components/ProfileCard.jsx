@@ -17,7 +17,7 @@ const ProfileCard = () => {
         </div>
 
         <div className="profileButton">
-          <a href="mailto:tim@james.com">Contact Me</a>
+          <a href="mailto:email@example.com">Contact Me</a>
         </div>
       </div>
     </div>
