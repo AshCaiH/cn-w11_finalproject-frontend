@@ -6,83 +6,93 @@ import { useState } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import {
-  TiWeatherCloudy,
-  TiWeatherDownpour,
-  TiWeatherPartlySunny,
-  TiWeatherShower,
-  TiWeatherSnow,
-  TiWeatherStormy,
-  TiWeatherSunny,
+    TiWeatherCloudy,
+    TiWeatherDownpour,
+    TiWeatherPartlySunny,
+    TiWeatherShower,
+    TiWeatherSnow,
+    TiWeatherStormy,
+    TiWeatherSunny,
 } from "react-icons/ti";
 
 export const QueryResponse = (props) => {
-  const user = useContext(userContext).user;
-  const [locationSaved, setLocationSaved] = useState(false);
+    const user = useContext(userContext).user;
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const [locationSaved, setLocationSaved] = useState(false);
 
     useEffect(() => {
         setLocationSaved(false);
     }, [props.response]);
 
-  const setDefault = async (location) => {
-    const body = JSON.stringify({ town: location });
+    const setDefault = async (location) => {
+        const body = JSON.stringify({ town: location });
 
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: user.token,
+        const headers = {
+            "Content-Type": "application/json",
+            Authorization: user.token,
+        };
+
+        await putRequest(
+            `${import.meta.env.VITE_SERVER_URL}/users/update/town`,
+            body,
+            headers
+        ).then((user.town = location));
     };
 
-    await putRequest(
-      `${import.meta.env.VITE_SERVER_URL}/users/update/town`,
-      body,
-      headers
-    ).then((user.town = location));
-  };
+    const Response = () => {
+        if (!props.response) return;
+        else {
+            if (!props.response.location)
+                return (
+                    <>
+                        <p>Awaiting response from server.</p>{" "}
+                        <AiOutlineLoading3Quarters className="loading-icon" />
+                    </>
+                );
+            const location = props.response.location;
+            const weather = props.response.weather;
+            console.log(weather);
+            const tempArray = [];
+            const codeArray = [];
+            const dayArray = []
+            const combined = weather.weathername.map((item, index) => {
+                tempArray.push(weather.temperature[index]);
+                codeArray.push(item);
 
-  const Response = () => {
-    if (!props.response) return;
-    else {
-      if (!props.response.location)
-        return (
-          <>
-            <p>Awaiting response from server.</p>{" "}
-            <AiOutlineLoading3Quarters className="loading-icon" />
-          </>
-        );
-      const location = props.response.location;
-      const weather = props.response.weather;
-      console.log(weather);
-      const tempArray = [];
-      const codeArray = [];
-      const combined = weather.weathername.map((item, index) => {
-        tempArray.push(weather.temperature[index]);
-        codeArray.push(item);
-        return {
-          name: item,
-          code: weather.weathercode[index],
-          temperature: weather.temperature[index],
-        };
-      });
+                // Gets the relevant day name.
+                const date = new Date();
+                date.setDate(date.getDate() + index);
 
-      const date = new Date();
-      console.log(date.getHours());
+                dayArray.push(days[date.getDay()]);
+
+                return {
+                    name: item,
+                    code: weather.weathercode[index],
+                    temperature: weather.temperature[index],
+                    day: days[date.getDay()]
+                };
+            });
+
+            const date = new Date();
+            console.log(date.getHours());
 
             const readWeather = (w) => {
-                if (w.code == 0) w.icon = <TiWeatherSunny />
-                else if (w.code <= 2) w.icon = <TiWeatherPartlySunny />
-                else if (w.code <= 48) w.icon = <TiWeatherCloudy />
-                else if (w.code <= 67) w.icon = <TiWeatherShower />
-                else if (w.code <= 77) w.icon = <TiWeatherSnow />
-                else if (w.code <= 82) w.icon = <TiWeatherDownpour />
-                else if (w.code <= 86) w.icon = <TiWeatherSnow />
-                else if (w.code <= 99) w.icon = <TiWeatherStormy />
-                else w.icon = <TiWeatherCloudy />
+                if (w.code == 0) w.icon = <TiWeatherSunny />;
+                else if (w.code <= 2) w.icon = <TiWeatherPartlySunny />;
+                else if (w.code <= 48) w.icon = <TiWeatherCloudy />;
+                else if (w.code <= 67) w.icon = <TiWeatherShower />;
+                else if (w.code <= 77) w.icon = <TiWeatherSnow />;
+                else if (w.code <= 82) w.icon = <TiWeatherDownpour />;
+                else if (w.code <= 86) w.icon = <TiWeatherSnow />;
+                else if (w.code <= 99) w.icon = <TiWeatherStormy />;
+                else w.icon = <TiWeatherCloudy />;
 
-                if (w.name.match( /Moderate|moderate/g )) w.colour = "yellow";
-                else if (w.name.match( /Heavy|Violent|Dense/g )) w.colour = "red"
-                else w.colour = "blue"
-            }
+                if (w.name.match(/Moderate/g)) w.colour = "yellow";
+                else if (w.name.match(/Heavy|Violent|Dense/g)) w.colour = "red";
+                else w.colour = "blue";
+            };
 
-      readWeather(combined[0]);
+            readWeather(combined[0]);
 
       return (
         <>
@@ -123,63 +133,64 @@ export const QueryResponse = (props) => {
             </div>
           </div>
 
-          <img src={`data:image/png;base64,${props.response.map}`} />
+                    <img src={`data:image/png;base64,${props.response.map}`} />
 
-          <h3>Next 6 days:</h3>
-          <div>
-            <Line
-              data={{
-                labels: codeArray,
-                // labels: [2, 3, 4, 5, 6, 7], - if You want to display the days on Y axis
-                datasets: [
-                  {
-                    label: "Temperature",
-                    data: tempArray,
-                  },
-                ],
-                options: {
-                  hover: {
-                    mode: "nearest",
-                    intersect: true,
-                  },
-                },
-              }}
-            />
-          </div>
+                    <h3>Forecast:</h3>
+                    <div>
+                        <Line
+                            data={{
+                                labels: codeArray,
+                                // labels: [2, 3, 4, 5, 6, 7], - if You want to display the days on Y axis
+                                datasets: [
+                                    {
+                                        label: "Temperature",
+                                        data: tempArray,
+                                    },
+                                ],
+                                options: {
+                                    hover: {
+                                        mode: "nearest",
+                                        intersect: true,
+                                    },
+                                },
+                            }}
+                        />
+                    </div>
 
-          <div className="forecast">
-            {combined.map((w, index) => {
-              if (index == 0) return;
+                    <div className="forecast">
+                        {combined.map((w, index) => {
+                            if (index == 0) return;
 
-              readWeather(w);
+                            readWeather(w);
 
-              return (
-                <div className="weatherbox element small noshadow" key={index}>
-                  <div className={`weathericon ${w.colour}`}>{w.icon}</div>
+                            return (
+                                <div className="weatherbox element small noshadow" key={index}>
+                                    <div className={`weathericon ${w.colour}`}>{w.icon}</div>
 
-                  <p>{w.name}</p>
-                  <p>Max temperatures of {w.temperature}°C</p>
-                </div>
-              );
-            })}
-          </div>
+                                    <h2>{w.day}</h2>
+                                    <p>{w.name}</p>
+                                    <p>Max temperatures of {w.temperature}°C</p>
+                                </div>
+                            );
+                        })}
+                    </div>
 
-          <p className="response-wrong-prompt">
-            Wrong area? Try using a postcode or search with a more specific
-            location name (eg, Bury, Greater Manchester)
-          </p>
-        </>
-      );
+                    <p className="response-wrong-prompt">
+                        Wrong area? Try using a postcode or search with a more specific
+                        location name (eg, Bury, Greater Manchester)
+                    </p>
+                </>
+            );
+        }
+    };
+
+    if (props.response) {
+        return (
+            <div className="response element">
+                <Response />
+            </div>
+        );
     }
-  };
-
-  if (props.response) {
-    return (
-      <div className="response element">
-        <Response />
-      </div>
-    );
-  }
 };
 
 export default QueryResponse;
