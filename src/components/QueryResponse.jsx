@@ -5,6 +5,7 @@ import { userContext } from "../common/contexts";
 import { useState } from "react";
 import { Line, Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
+import "chartjs-adapter-luxon";
 import {
   TiWeatherCloudy,
   TiWeatherDownpour,
@@ -16,10 +17,21 @@ import {
 } from "react-icons/ti";
 
 export const QueryResponse = (props) => {
-  const user = useContext(userContext).user;
-  const [temp, setTemp] = useState([]);
+  const { user, nightMode } = useContext(userContext);
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const [locationSaved, setLocationSaved] = useState(false);
 
-  useEffect(() => {}, [props.response]);
+  useEffect(() => {
+    setLocationSaved(false);
+  }, [props.response]);
 
   const setDefault = async (location) => {
     const body = JSON.stringify({ town: location });
@@ -46,27 +58,33 @@ export const QueryResponse = (props) => {
             <AiOutlineLoading3Quarters className="loading-icon" />
           </>
         );
+
       const location = props.response.location;
       const weather = props.response.weather;
-      // Hourly wether
-      const hourlyWeather = props.response.weather.hourly_weather;
-      const hourlyTemp = hourlyWeather.temperature_2m;
-      const hourlyRain = hourlyWeather.rain;
-      const hourlyClouds = hourlyWeather.cloud_cover;
-      const hours = hourlyWeather.hourly;
-      // Get hours
-
+      console.log(weather);
       const tempArray = [];
       const codeArray = [];
+      const dayArray = [];
       const combined = weather.weathername.map((item, index) => {
         tempArray.push(weather.temperature[index]);
         codeArray.push(item);
+
+        // Gets the relevant day name.
+        const date = new Date();
+        date.setDate(date.getDate() + index);
+
+        dayArray.push(days[date.getDay()]);
+
         return {
           name: item,
           code: weather.weathercode[index],
           temperature: weather.temperature[index],
+          day: days[date.getDay()],
         };
       });
+
+      const date = new Date();
+      console.log(date.getHours());
 
       const readWeather = (w) => {
         if (w.code == 0) w.icon = <TiWeatherSunny />;
@@ -88,18 +106,27 @@ export const QueryResponse = (props) => {
 
       return (
         <>
-          {/* Don't save the county if it comes back as "undefined" */}
-          <button
-            onClick={() =>
-              setDefault(
-                `${location.city}, ${
+          {locationSaved ? (
+            <div className="feedback type-success">
+              Default location set to{" "}
+              {`${location.city}, ${
+                location.county != undefined ? location.county + "," : ""
+              } ${location.country}`}
+            </div>
+          ) : (
+            <button
+              onClick={() => {
+                const newDefaultLoc = `${location.city}, ${
                   location.county != undefined ? location.county + "," : ""
-                } ${location.country}`
-              )
-            }
-          >
-            Set {location.city} as my default location
-          </button>
+                } ${location.country}`;
+                setDefault(newDefaultLoc);
+                setLocationSaved(newDefaultLoc);
+              }}
+            >
+              Set {location.city} as my default location
+            </button>
+          )}
+
           <h3>
             Showing weather information for {location.city}, {location.county}{" "}
             in {location.country}
@@ -120,24 +147,70 @@ export const QueryResponse = (props) => {
           </div>
 
           <img src={`data:image/png;base64,${props.response.map}`} />
-          {/*  */}
+
           <h3>Today</h3>
-          <div>
-            <Line
-              data={{
-                labels: hours,
-                datasets: [
-                  {
-                    label: "Temperature",
-                    data: hourlyTemp,
-                    borderColor: "green",
-                    yAxisID: "B",
+          <Line
+            data={{
+              labels: weather.hourly.time.map((item) => new Date(item)),
+              // labels: [2, 3, 4, 5, 6, 7], - if You want to display the days on Y axis
+              datasets: [
+                {
+                  label: "Temperature",
+                  data: weather.hourly.temperature_2m,
+                },
+                {
+                  label: "Cloud cover",
+                  data: weather.hourly.cloud_cover,
+                },
+              ],
+            }}
+            options={{
+              fontColor: "#FFF",
+              scales: {
+                x: {
+                  type: "time",
+                  ticks: {
+                    color: nightMode ? "white" : "black",
                   },
+                  time: {
+                    unit: "day",
+                  },
+                },
+                y: {
+                  ticks: {
+                    color: nightMode ? "white" : "black",
+                  },
+                },
+              },
+              elements: {
+                point: {
+                  radius: 5,
+                  pointBackgroundColor: "#0000",
+                  pointBorderColor: "#0000",
+                },
+              },
+              plugins: {
+                legend: {
+                  position: "top",
+                  labels: {
+                    color: nightMode ? "white" : "black",
+                  },
+                },
+              },
+              hover: {
+                mode: "nearest",
+                intersect: true,
+              },
+            }}
+          />
+          <div>
+            <Bar
+              data={{
+                labels: weather.hourly.time,
+                datasets: [
                   {
                     label: "rain",
-                    data: hourlyRain,
-                    backgroundColor: "blue",
-                    yAxisID: "A",
+                    data: weather.hourly.rain,
                   },
                 ],
                 options: {
@@ -145,44 +218,44 @@ export const QueryResponse = (props) => {
                     mode: "nearest",
                     intersect: true,
                   },
-                  yAxes: [
-                    {
-                      id: "A",
-                      type: "linear",
-                      position: "left",
-                    },
-                    {
-                      id: "B",
-                      type: "linear",
-                      position: "right",
-                      ticks: {
-                        max: 1,
-                        min: 0,
-                      },
-                    },
-                  ],
                 },
               }}
-            />
-          </div>
-
-          <h3>Next 6 days:</h3>
-          <div>
-            <Line
-              data={{
-                labels: codeArray,
-                // labels: [2, 3, 4, 5, 6, 7], - if You want to display the days on Y axis
-                datasets: [
-                  {
-                    label: "Temperature",
-                    data: tempArray,
+              options={{
+                fontColor: "#FFF",
+                scales: {
+                  x: {
+                    type: "time",
+                    ticks: {
+                      color: nightMode ? "white" : "black",
+                    },
+                    time: {
+                      unit: "day",
+                    },
                   },
-                ],
-                options: {
-                  hover: {
-                    mode: "nearest",
-                    intersect: true,
+                  y: {
+                    ticks: {
+                      color: nightMode ? "white" : "black",
+                    },
                   },
+                },
+                elements: {
+                  point: {
+                    radius: 5,
+                    pointBackgroundColor: "#0000",
+                    pointBorderColor: "#0000",
+                  },
+                },
+                plugins: {
+                  legend: {
+                    position: "top",
+                    labels: {
+                      color: nightMode ? "white" : "black",
+                    },
+                  },
+                },
+                hover: {
+                  mode: "nearest",
+                  intersect: true,
                 },
               }}
             />
@@ -197,7 +270,7 @@ export const QueryResponse = (props) => {
               return (
                 <div className="weatherbox element small noshadow" key={index}>
                   <div className={`weathericon ${w.colour}`}>{w.icon}</div>
-
+                  <h2>{w.day}</h2>
                   <p>{w.name}</p>
                   <p>Max temperatures of {w.temperature}°C</p>
                 </div>
