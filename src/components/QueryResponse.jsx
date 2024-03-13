@@ -17,9 +17,11 @@ import {
 
 export const QueryResponse = (props) => {
   const user = useContext(userContext).user;
-  const [temp, setTemp] = useState([]);
+  const [locationSaved, setLocationSaved] = useState(false);
 
-  useEffect(() => { }, [props.response]);
+    useEffect(() => {
+        setLocationSaved(false);
+    }, [props.response]);
 
   const setDefault = async (location) => {
     const body = JSON.stringify({ town: location });
@@ -84,17 +86,24 @@ export const QueryResponse = (props) => {
 
       return (
         <>
-          {/* Don't save the county if it comes back as "undefined" */}
-          <button
-            onClick={() =>
-              setDefault(
-                `${location.city}, ${location.county != undefined ? location.county + "," : ""
-                } ${location.country}`
-              )
-            }
-          >
-            Set {location.city} as my default location
-          </button>
+
+        { locationSaved ?
+            <div className="feedback type-success">
+                Default location set to {`${location.city}, ${location.county != undefined ? location.county + "," : ""} ${location.country}`}
+            </div>
+        :
+            <button onClick={() => {
+                    const newDefaultLoc = `${location.city}, ${location.county != undefined ? location.county + "," : ""} ${location.country}`
+                    setDefault(newDefaultLoc)
+                    setLocationSaved(newDefaultLoc);
+                }
+                
+                }>
+                Set {location.city} as my default location
+            </button>
+        }
+
+
           <h3>
             Showing weather information for {location.city}, {location.county}{" "}
             in {location.country}
