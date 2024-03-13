@@ -17,11 +17,14 @@ import {
 } from "react-icons/ti";
 
 export const QueryResponse = (props) => {
-    const { user, nightMode } = useContext(userContext);
+
+    const {user, nightMode} = useContext(userContext);
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const [locationSaved, setLocationSaved] = useState(false);
 
-  useEffect(() => {}, [props.response]);
+    useEffect(() => {
+        setLocationSaved(false);
+    }, [props.response]);
 
     const setDefault = async (location) => {
         const body = JSON.stringify({ town: location });
@@ -48,21 +51,33 @@ export const QueryResponse = (props) => {
                         <AiOutlineLoading3Quarters className="loading-icon" />
                     </>
                 );
-            const weather = props.response.weather;
-            // Hourly wether
-            // Get hours
 
+            const location = props.response.location;
+            const weather = props.response.weather;
+            console.log(weather);
             const tempArray = [];
             const codeArray = [];
+            const dayArray = []
             const combined = weather.weathername.map((item, index) => {
                 tempArray.push(weather.temperature[index]);
                 codeArray.push(item);
+
+                // Gets the relevant day name.
+                const date = new Date();
+                date.setDate(date.getDate() + index);
+
+                dayArray.push(days[date.getDay()]);
+
                 return {
                     name: item,
                     code: weather.weathercode[index],
                     temperature: weather.temperature[index],
+                    day: days[date.getDay()]
                 };
             });
+
+            const date = new Date();
+            console.log(date.getHours());
 
             const readWeather = (w) => {
                 if (w.code == 0) w.icon = <TiWeatherSunny />;
@@ -84,18 +99,25 @@ export const QueryResponse = (props) => {
 
       return (
         <>
-          {/* Don't save the county if it comes back as "undefined" */}
-          <button
-            onClick={() =>
-              setDefault(
-                `${location.city}, ${
-                  location.county != undefined ? location.county + "," : ""
-                } ${location.country}`
-              )
-            }
-          >
-            Set {location.city} as my default location
-          </button>
+
+
+        { locationSaved ?
+            <div className="feedback type-success">
+                Default location set to {`${location.city}, ${location.county != undefined ? location.county + "," : ""} ${location.country}`}
+            </div>
+        :
+            <button onClick={() => {
+                    const newDefaultLoc = `${location.city}, ${location.county != undefined ? location.county + "," : ""} ${location.country}`
+                    setDefault(newDefaultLoc)
+                    setLocationSaved(newDefaultLoc);
+                }
+                
+                }>
+                Set {location.city} as my default location
+            </button>
+        }
+
+
           <h3>
             Showing weather information for {location.city}, {location.county}{" "}
             in {location.country}
@@ -228,7 +250,7 @@ export const QueryResponse = (props) => {
                                     intersect: true,
                                 }
                             }}/>
-                    </div>                    
+                    </div>
 
                     <div className="forecast">
                         {combined.map((w, index) => {
@@ -239,7 +261,6 @@ export const QueryResponse = (props) => {
                             return (
                                 <div className="weatherbox element small noshadow" key={index}>
                                     <div className={`weathericon ${w.colour}`}>{w.icon}</div>
-
                                     <h2>{w.day}</h2>
                                     <p>{w.name}</p>
                                     <p>Max temperatures of {w.temperature}°C</p>
