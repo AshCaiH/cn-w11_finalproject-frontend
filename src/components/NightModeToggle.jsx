@@ -4,14 +4,13 @@ import { userContext } from "../common/contexts";
 import Cookie from "js-cookie";
 
 export const NightModeToggle = () => {
-    const {nightMode, setNightMode} = useContext(userContext);
+    const { nightMode, setNightMode } = useContext(userContext);
 
-    useEffect(() => {        
+    useEffect(() => {
         if (Cookie.get("nightMode") == "true") setNightMode(true);
     }, [setNightMode]);
 
     useEffect(() => {
-
         // if (!nightMode) document.cookie = "nightMode=0"
         // else document.cookie = "nightMode=1"
 
@@ -32,22 +31,27 @@ export const NightModeToggle = () => {
 
         variables.forEach((variable) => {
             if (variable.key.indexOf("Toggle") != -1) {
-                const newValue = variable.key.replace("Toggle", nightMode ? "Night" : "Day")
-                document.documentElement.style.setProperty(variable.key, `var(${newValue})`);
+                const newValue = variable.key.replace(
+                    "Toggle",
+                    nightMode ? "Night" : "Day"
+                );
+                document.documentElement.style.setProperty(
+                    variable.key,
+                    `var(${newValue})`
+                );
             }
         });
     }, [nightMode]);
 
     return (
-        <div className="nightmode-toggle" onClick={()=>{
-                document.cookie = `nightMode=${!nightMode}`
-                setNightMode(!nightMode)
-            }}>
-            {!nightMode ?
-                <IoMdSunny />
-                :
-                <IoMdMoon />
-            }
+        <div
+            className="nightmode-toggle"
+            onClick={() => {
+                document.cookie = `nightMode=${!nightMode}`;
+                setNightMode(!nightMode);
+            }}
+        >
+            {!nightMode ? <IoMdSunny /> : <IoMdMoon />}
         </div>
     );
 };
