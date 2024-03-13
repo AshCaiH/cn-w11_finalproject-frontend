@@ -125,26 +125,60 @@ export const QueryResponse = (props) => {
                     <img src={`data:image/png;base64,${props.response.map}`} />
 
                     <h3>Today</h3>
-                    <div>
-                        <Line
-                            data={{
-                                labels: weather.hourly.time,
-                                datasets: [
-                                    {
-                                        label: "Temperature",
-                                        data: weather.hourly.temperature_2m,
-                                        borderColor: "green",
-                                    },
-                                ],
-                                options: {
-                                    hover: {
-                                        mode: "nearest",
-                                        intersect: true,
-                                    },
+                    <Line
+                        data={{
+                            labels: weather.hourly.time.map((item) => new Date(item)),
+                            // labels: [2, 3, 4, 5, 6, 7], - if You want to display the days on Y axis
+                            datasets: [
+                                {
+                                    label: "Temperature",
+                                    data: weather.hourly.temperature_2m,
                                 },
-                            }}
-                        />
-                    </div>
+                                {
+                                    label: "Cloud cover",
+                                    data: weather.hourly.cloud_cover,
+                                }
+                            ],
+                        }}
+
+                        options = {{
+                            fontColor: "#FFF",
+                            scales: {
+                                x: {
+                                    type: 'time',
+                                    ticks: {
+                                        color: (nightMode ? "white" : "black")
+                                    },
+                                    time: {
+                                        unit: 'day'
+                                    }
+                                },
+                                y: {
+                                    ticks: {
+                                        color: (nightMode ? "white" : "black")
+                                    },
+                                },                                      
+                            },
+                            elements: {
+                                point:{
+                                    radius: 5,
+                                    pointBackgroundColor: "#0000",
+                                    pointBorderColor: "#0000",
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                    labels: {
+                                    color: (nightMode ? "white" : "black")
+                                    }
+                                }
+                            },
+                            hover: {
+                                mode: "nearest",
+                                intersect: true,
+                            },  
+                        }}/>
                     <div>
                         <Bar
                             data={{
@@ -153,7 +187,6 @@ export const QueryResponse = (props) => {
                                     {
                                         label: "rain",
                                         data: weather.hourly.rain,
-                                        backgroundColor: "blue",
                                     },
                                 ],
                                 options: {
@@ -163,30 +196,46 @@ export const QueryResponse = (props) => {
                                     },
                                 },
                             }}
-                        />
-                    </div>
 
-                    {/* <h3>Next 6 days:</h3>
-                    <div>
-                        <Line
-                            data={{
-                                labels: codeArray,
-                                // labels: [2, 3, 4, 5, 6, 7], - if You want to display the days on Y axis
-                                datasets: [
-                                    {
-                                        label: "Temperature",
-                                        data: tempArray,
+                            options = {{
+                                fontColor: "#FFF",
+                                scales: {
+                                    x: {
+                                        type: 'time',
+                                        ticks: {
+                                            color: (nightMode ? "white" : "black")
+                                        },
+                                        time: {
+                                            unit: 'day'
+                                        }
                                     },
-                                ],
-                                options: {
-                                    hover: {
-                                        mode: "nearest",
-                                        intersect: true,
-                                    },
+                                    y: {
+                                        ticks: {
+                                            color: (nightMode ? "white" : "black")
+                                        },
+                                    },                                      
                                 },
-                            }}
-                        />
-                    </div> */}
+                                elements: {
+                                    point:{
+                                        radius: 5,
+                                        pointBackgroundColor: "#0000",
+                                        pointBorderColor: "#0000",
+                                    }
+                                },
+                                plugins: {
+                                    legend: {
+                                        position: 'top',
+                                        labels: {
+                                        color: (nightMode ? "white" : "black")
+                                        }
+                                    }
+                                },
+                                hover: {
+                                    mode: "nearest",
+                                    intersect: true,
+                                }
+                            }}/>
+                    </div>                    
 
                     <div className="forecast">
                         {combined.map((w, index) => {
