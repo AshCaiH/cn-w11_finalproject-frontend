@@ -19,7 +19,7 @@ export const QueryResponse = (props) => {
   const user = useContext(userContext).user;
   const [temp, setTemp] = useState([]);
 
-  useEffect(() => {}, [props.response]);
+  useEffect(() => { }, [props.response]);
 
   const setDefault = async (location) => {
     const body = JSON.stringify({ town: location });
@@ -88,8 +88,7 @@ export const QueryResponse = (props) => {
           <button
             onClick={() =>
               setDefault(
-                `${location.city}, ${
-                  location.county != undefined ? location.county + "," : ""
+                `${location.city}, ${location.county != undefined ? location.county + "," : ""
                 } ${location.country}`
               )
             }
