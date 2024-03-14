@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userContext } from "../common/contexts";
 import "./UserSettings.css";
+import AreYouSure from "./AreYouSure";
 const UserSettings = () => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(userContext);
@@ -10,9 +11,10 @@ const UserSettings = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handlePasswordSubmit = async (e) => {
-    e.preventDefault();
+  const [afterConfirmPW, setAfterConfirmPW] = useState(null);
 
+
+  const handlePasswordSubmit = async () => {
     if (password === confirmPassword) {
       const res = await fetch(
         `${import.meta.env.VITE_SERVER_URL}/users/update/password`,
@@ -36,9 +38,7 @@ const UserSettings = () => {
     }
   };
 
-  const handleUsernameSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleUsernameSubmit = async () => {
     const res = await fetch(
       `${import.meta.env.VITE_SERVER_URL}/users/update/username`,
       {
@@ -61,8 +61,6 @@ const UserSettings = () => {
   };
 
   const handleDeleteAccount = async (e) => {
-    e.preventDefault();
-
     const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/users/delUser`, {
       method: "DELETE",      
       headers: {
@@ -94,88 +92,100 @@ const UserSettings = () => {
   };
 
   return (
-    <div className="userStyle">
-      <div className="usersettings element">
-        <h2>User Settings</h2>
-        <div className="element noshadow">
-          <h3>Set favourite towns</h3>
-          <form onSubmit={handleAddFavouriteTown}>
-            <label htmlFor="hometown">Hometown</label>
-            <input
-              type="text"
-              value={hometown}
-              onChange={(e) => setHometown(e.target.value)}
-              id="hometown"
-              name="hometown"
-            />
-            <button type="submit" className="formButton">
-              Add Favourite Town
-            </button>
-          </form>
+    <>
+      {afterConfirmPW && <AreYouSure next={afterConfirmPW} setNext={setAfterConfirmPW}/>}
+      <div className="userStyle">
+        <div className="usersettings element">
+          <h2>User Settings</h2>
+          <div className="element noshadow">
+            <h3>Set favourite towns</h3>
+            <form onSubmit={handleAddFavouriteTown}>
+              <label htmlFor="hometown">Hometown</label>
+              <input
+                type="text"
+                value={hometown}
+                onChange={(e) => setHometown(e.target.value)}
+                id="hometown"
+                name="hometown"
+              />
+              <button type="submit" className="formButton">
+                Add Favourite Town
+              </button>
+            </form>
 
-          <ul className="favTownsContainer">
-            {favouriteTowns.map((town) => (
-              <li className="favTown" key={town}>
-                {town}
-                <button onClick={() => handleRemoveFavouriteTown(town)}>
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+            <ul className="favTownsContainer">
+              {favouriteTowns.map((town) => (
+                <li className="favTown" key={town}>
+                  {town}
+                  <button onClick={() => handleRemoveFavouriteTown(town)}>
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <div className="element noshadow">
-          <h3>Change username</h3>
-          <form onSubmit={handleUsernameSubmit}>
-            <label htmlFor="username">New Username</label>
-            <input
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              id="username"
-              name="username"
-            />
-            <button type="submit" className="formButton">
-              Update Username
-            </button>
-          </form>
-        </div>
+          <div className="element noshadow">
+            <h3>Change username</h3>
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                setAfterConfirmPW(() => handleUsernameSubmit)
+              }}>
+              <label htmlFor="username">New Username</label>
+              <input
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                id="username"
+                name="username"
+              />
+              <button type="submit" className="formButton">
+                Update Username
+              </button>
+            </form>
+          </div>
 
-        <div className="element noshadow">
-          <h3>Change password</h3>
-          <form onSubmit={handlePasswordSubmit}>
-            <label htmlFor="password">New Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              id="password"
-              name="password"
-            />
-            <label htmlFor="confirmPassword">Confirm New Password</label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              id="confirmPassword"
-              name="confirmPassword"
-            />
-            <button type="submit" className="formButton">
-              Update Password
-            </button>
-          </form>
-        </div>
+          <div className="element noshadow">
+            <h3>Change password</h3>
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                setAfterConfirmPW(() => handlePasswordSubmit)
+              }}>
+              <label htmlFor="password">New Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={() => setPassword()}
+                id="password"
+                name="password"
+              />
+              <label htmlFor="confirmPassword">Confirm New Password</label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={() => setConfirmPassword()}
+                id="confirmPassword"
+                name="confirmPassword"
+              />
+              <button type="submit" className="formButton">
+                Update Password
+              </button>
+            </form>
+          </div>
 
-        <div className="element noshadow">
-          <h3>Delete account</h3>
-          <form onSubmit={handleDeleteAccount}>
-            <button className="dangerous" type="submit">
-              Delete Account
-            </button>
-          </form>
+          <div className="element noshadow">
+            <h3>Delete account</h3>
+            <form onSubmit={(e) => {
+                  e.preventDefault();
+                  setAfterConfirmPW(() => handleDeleteAccount)
+                }}>
+              <button className="dangerous" type="submit">
+                Delete Account
+              </button>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
