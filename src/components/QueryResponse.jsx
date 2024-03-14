@@ -159,7 +159,7 @@ export const QueryResponse = (props) => {
                   data: weather.hourly.temperature_2m,
                 },
                 {
-                  label: "Cloud cover",
+                  label: "Cloud cover %",
                   data: weather.hourly.cloud_cover,
                 },
               ],
