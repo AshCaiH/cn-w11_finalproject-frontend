@@ -37,7 +37,6 @@
   height: 80px;
   width: 80px;
   border-radius: 50px;
-  /* border: 2px dotted white; */
   filter: invert();
   margin-bottom: -10px;
 }
