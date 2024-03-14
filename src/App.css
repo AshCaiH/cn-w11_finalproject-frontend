@@ -34,6 +34,10 @@
     --buttonBorderColour-Day: #14222b00;
     --buttonBorderColour-Night: #03779e;
     --buttonBorderColour-Toggle: var(--buttonbgColour-Day);
+
+    --navbg-Day: #333C;
+    --navbg-Night: #111C;
+    --navbg-Toggle: var(--buttonbgColour-Day);
 }
 
 button {
