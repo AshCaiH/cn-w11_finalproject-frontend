@@ -1,27 +1,38 @@
 .loginregister-holder {
-    background-color: var(--elementbg-Toggle);
-    margin: 20px;
-    width: 250px;
-    align-self: center;
-    min-height: 350px;
-    border-radius: 10px;
-    transition: all 0.25s;
+  background-color: var(--elementbg-Toggle);
+  margin: 20px;
+  width: 250px;
+  align-self: center;
+  min-height: 350px;
+  border-radius: 10px;
+  transition: all 0.25s;
 
-    overflow: hidden;
+  overflow: hidden;
 }
 
 form button:last-of-type {
-    align-self: flex-end;
+  align-self: flex-end;
 }
 
-.loginregister-holder>form {
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    margin: 10px;
+.loginregister-holder > form {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  margin: 10px;
 }
 
-.loginregister-holder>form button {
-    position:relative;
-    margin-top: 10px;
+.loginregister-holder > form button {
+  position: relative;
+  margin-top: 10px;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 150px);
+}
+
+.root {
+  height: 100%;
 }
