@@ -35,19 +35,21 @@ function App() {
           Authorization: `Bearer ${token}`,
         },
       }
-    ).then((response) => {
-      return response.json();
-    }).then(async (response) => {
-      response.user.token = token;
-      await setUser(response.user);
-    });
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then(async (response) => {
+        response.user.token = token;
+        await setUser(response.user);
+      });
   };
   return (
     // Allows us to reach "user" and "setUser" from any component.
 
     <userContext.Provider value={{ user, setUser, nightMode, setNightMode }}>
       <BrowserRouter basename="">
-        <Navbar />
+        {user && <Navbar />}
         <div id="content">
           {!user ? (
             <LoginOrRegister />
