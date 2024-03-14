@@ -13,23 +13,33 @@ export const Navbar = (props) => {
 
   return (
     <nav className="navbar">
-      <button onClick={() => setIsOpen(!isOpen)} className="navbar-toggle show-mobile">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="navbar-toggle show-mobile"
+      >
         <GiHamburgerMenu />
       </button>
 
-               
       <div className={`navbar-menu ${!isOpen && "hide-mobile"}`}>
-        {user && <>
-          <div className="navbar-links">
-            <NavLink to="/"><button className="user-info-button">Dashboard</button></NavLink>
-            <NavLink to="/user"><button className="user-info-button">Profile</button></NavLink>
-            <NavLink to="/settings"><button className="user-info-button">Settings</button></NavLink>
-            <LogoutButton class="show-mobile" />
-          </div>
-          <UserInfo class="hide-mobile"/>
+        {user && (
+          <>
+            <img className="navbar-logo" src="public/weathercode.png" />
+            <div className="navbar-links">
+              <NavLink to="/">
+                <button className="user-info-button">Dashboard</button>
+              </NavLink>
+              <NavLink to="/user">
+                <button className="user-info-button">Profile</button>
+              </NavLink>
+              <NavLink to="/settings">
+                <button className="user-info-button">Settings</button>
+              </NavLink>
+              <LogoutButton class="show-mobile" />
+            </div>
+            <UserInfo class="hide-mobile" />
           </>
-        }
-        < NightModeToggle />
+        )}
+        <NightModeToggle />
       </div>
     </nav>
   );
