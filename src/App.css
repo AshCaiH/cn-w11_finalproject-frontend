@@ -180,4 +180,10 @@ button.dangerous {
     .show-mobile {display: initial !important}
     .hide-mobile {display: none !important}
 }
-  
+
+.loginregister-holder {
+    .feedback {
+        position:relatve;
+        top: -60px;
+   }
+}
