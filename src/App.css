@@ -4,7 +4,7 @@
     --bgimage-Toggle: var(--bgimage-Day);
 
     --elementbg-Day: #ffffff88;
-    --elementbg-Night: #41698f6b;
+    --elementbg-Night: #4078ad99;
     --elementbg-Toggle: var(--elementbg-Day);
 
     --elementbgsolid-Day: #ffffff;
@@ -16,7 +16,7 @@
     --inputbg-Toggle: var(--inputbg-Day);
 
     --elementtext-Day: #213547;
-    --elementtext-Night: rgb(248, 255, 236);
+    --elementtext-Night: rgb(255, 239, 227);
     --elementtext-Toggle: var(--elementtext-Day);
 
     --boxglow-Day: rgba(0, 0, 0, 0.555);
@@ -70,14 +70,14 @@ input {
     margin: 20px;
     align-self: center;
     border-radius: 10px;
-    box-shadow:
+    /* box-shadow:
         0px 1.7px 2.2px rgba(0, 0, 0, 0.052),
         0px 4.1px 5.3px rgba(0, 0, 0, 0.079),
         0px 7.6px 10px rgba(0, 0, 0, 0.099),
         0px 13.6px 17.9px rgba(0, 0, 0, 0.114),
         0px 25.5px 33.4px rgba(0, 0, 0, 0.124),
         0px 61px 80px rgba(0, 0, 0, 0.13)
-    ;
+    ; */
     transition: all 0.25s;
     backdrop-filter: blur(5px);
     min-width: 400px;
