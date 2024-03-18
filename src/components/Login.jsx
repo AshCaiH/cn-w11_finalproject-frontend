@@ -48,6 +48,7 @@ export const Login = (props) => {
     );
 
     setTimeout(() => {
+      if (props.setFeedback) return;
       props.setFeedback("The server may need time to start up after a period of inactivity. Please wait up to one minute.");
       props.setFeedbackType("error");
     }, 1000)
