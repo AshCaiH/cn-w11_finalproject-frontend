@@ -183,7 +183,7 @@ button.dangerous {
 
 .loginregister-holder {
     .feedback {
-        position:relatve;
+        position:relative;
         top: -60px;
    }
 }
