@@ -15,15 +15,22 @@ export const Register = (props) => {
         password:   password,
     });
 
-    const response = await postRequest(`${import.meta.env.VITE_SERVER_URL}/users/signUp`, reqBody);
+    postRequest(`${import.meta.env.VITE_SERVER_URL}/users/signUp`, reqBody).then(
+      (response) => {
+        if (response.error) {
+          props.setFeedback(response.error)
+          props.setFeedbackType("error");
+        } else {
+          props.setFeedback("Registration successful.")
+          props.setFeedbackType("success");
+        }
+      }
+    );
 
-    if (response.error) {
-      props.setFeedback(response.error)
+    setTimeout(() => {
+      props.setFeedback("The server may need time to start up after a period of inactivity. Please wait up to one minute.");
       props.setFeedbackType("error");
-    } else {
-      props.setFeedback("Registration successful.")
-      props.setFeedbackType("success");
-    }
+    }, 1000) 
   }
 
   return (

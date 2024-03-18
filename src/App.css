@@ -104,7 +104,6 @@ input {
 
 form {
     position:relative;
-    height: 100%;
 }
 
 form>input {
@@ -179,11 +178,4 @@ button.dangerous {
 @media (max-width: 768px) {
     .show-mobile {display: initial !important}
     .hide-mobile {display: none !important}
-}
-
-.loginregister-holder {
-    .feedback {
-        position:relative;
-        top: -60px;
-   }
 }

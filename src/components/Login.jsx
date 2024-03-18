@@ -26,22 +26,31 @@ export const Login = (props) => {
       password: pass,
     });
 
-    const response = await postRequest(`${import.meta.env.VITE_SERVER_URL}/users/logIn`, reqBody);
+    props.setFeedback(null);
 
-    if (response.error) {
-      props.setFeedback(response.error);
+    postRequest(`${import.meta.env.VITE_SERVER_URL}/users/logIn`, reqBody).then(
+      (response) => {
+        if (response.error) {
+          props.setFeedback(response.error);
+          props.setFeedbackType("error");
+        } else {
+          props.setFeedback("Login successful."); // The page will probably update before this is visible but it's here just in case.
+          props.setFeedbackType("success");
+          setUser(response.user);
+          Cookie.set(
+            "jwt_token",
+            response.user.token,
+            { expires: 7 },
+            { path: "/" }
+          );
+        }
+      }
+    );
+
+    setTimeout(() => {
+      props.setFeedback("The server may need time to start up after a period of inactivity. Please wait up to one minute.");
       props.setFeedbackType("error");
-    } else {
-      props.setFeedback("Login successful."); // The page will probably update before this is visible but it's here just in case.
-      props.setFeedbackType("success");
-      setUser(response.user);
-      Cookie.set(
-        "jwt_token",
-        response.user.token,
-        { expires: 7 },
-        { path: "/" }
-      );
-    }
+    }, 1000)
   };
 
   return (
