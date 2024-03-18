@@ -20,11 +20,13 @@ export const LoginOrRegister = (props) => {
             <Login
               setFeedback={setFeedback}
               setFeedbackType={setFeedbackType}
+              feedback={feedback}
             />
           ) : (
             <Register
               setFeedback={setFeedback}
               setFeedbackType={setFeedbackType}
+              feedback={feedback}
             />
           )}
 
